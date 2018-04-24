@@ -22,18 +22,18 @@
             dataType: 'json',
             success: function (msg) {
 				if(msg == 'error' || !msg){
-					fade('修改失败')
+					console.log('修改失败');
 				}else if (msg) {
-               		fade('修改成功')
+               		console.log('修改成功');
                		setTimeout(()=>{
 	               		window.location.href = "/posts"
                		},1000)
-               	} 
+               	}
             },
             error: function () {
                 alert('服务器异常');
             }
-        })		
+        })
 	})
 </script>
 <% include footer %>
