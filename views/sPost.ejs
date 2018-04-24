@@ -21,6 +21,36 @@
 	<!--[if lt IE 9]>
 	<script src="/js/respond.min.js"></script>
 	<![endif]-->
+	<style>
+		.user-msg {
+			position: relative;
+			padding: 4px 50px;
+		}
+
+		.user-msg img{
+			position: absolute;
+			width: 40px;
+			height: 40px;
+			border-radius: 50%;
+			left: 0;
+			top: 0;
+		}
+
+		.user-msg span{
+			display: block;
+			line-height: 20px;
+			font-size: 12px;
+		}
+
+		.cmt-detail {
+			padding-bottom: 30px;
+		}
+
+		.cmt-detail p {
+			margin-bottom: auto;
+		}
+
+	</style>
 	</head>
 	<body class="single">
 
@@ -63,29 +93,38 @@
 			<div class="comment_wrap">
 				<% if(session.user){ %>
 				<form class="form" method="post" action="/<%= posts.id %>">
-					<textarea id="spContent" name="content" cols="82"></textarea>
-					<div class="submit">发表留言</div>
+					<div class="form-group">
+				    <label for="content">内容：</label>
+						<textarea class="form-control"  placeholder="请输入内容" name="content" rows="5"></textarea>
+				  </div>
+
+					<div class="form-group">
+						<button type="submit" class="btn btn-default submit">发表留言</button>
+					</div>
 				</form>
 				<% } else{ %>
 					<p class="tips">登录之后才可以评论哟</p>
 				<% } %>
 				<% if (commentPageLenght > 0) { %>
-				<div class="comment_list markdown">
+				<div class="comment-list markdown">
 					<% pageOne.forEach(function(res){ %>
-						<div class="cmt_lists">
-							<div class="cmt_content">
-								<div class="userMsg">
-									<img src="../images/<%= res['avator'] %>" onerror="this.src='http://blog.wclimb.site/images/default.jpg'"><span><%= res['name'] %></span>
+						<div class="cmt-lists">
+							<div class="cmt-content">
+								<div class="user-msg">
+									<img src="../images/<%= res['avator'] %>" onerror="this.src='http://blog.wclimb.site/images/default.jpg'">
+									<span><%= res['name'] %></span>
+									<span class="cmt-time"><%= res['moment'] %></span>
 								</div>
-								<div class="cmt_detail">
+
+								<div class="cmt-detail">
 									<%- res['content'] %>
+									<span class="cmt-name">
+										<% if(session && session.user ===  res['name']){ %>
+											<a class="delete-comment" href="javascript:delete_comment(<%= res['id'] %>);"> 删除</a>
+										<% } %>
+									</span>
 								</div>
-								<span class="cmt_time"><%= res['moment'] %></span>
-								<span class="cmt_name">
-									<% if(session && session.user ===  res['name']){ %>
-										<a class="delete_comment" href="javascript:delete_comment(<%= res['id'] %>);"> 删除</a>
-									<% } %>
-								</span>
+
 							</div>
 						</div>
 					<% }) %>
@@ -135,12 +174,12 @@
 				cache: false,
 				success: function (msg) {
 					if (msg.data == 1) {
-						fade('删除文章成功')
+						alert('删除文章成功')
 						setTimeout(() => {
 							window.location.href = "/posts"
 						}, 1000)
 					} else {
-						fade('删除文章失败')
+						alert('删除文章失败')
 					}
 				}
 			})
@@ -195,6 +234,7 @@
 				error: function () {
 					alert('异常');
 				}
-			})
-		}
+			});
+			return false;
+		};
 	</script>
