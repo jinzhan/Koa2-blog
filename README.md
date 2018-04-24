@@ -63,3 +63,7 @@ $ npm run dev(运行项目)
 ```
 $ npm test(测试项目)
 ```
+
+```
+参考： https://github.com/wclimb/Koa2-blog
+```
