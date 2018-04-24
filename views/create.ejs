@@ -1,24 +1,51 @@
 <%- include("header",{type:'create'}) %>
 <div class="container">
-	<form style="width:100%" method="post" class="form create">
-		<div>
-			<label>标题：</label>
-			<input placeholder="请输入标题" type="text" name="title">
-		</div>
-		<div>
-			<label>内容：</label>
-			<textarea placeholder="请输入内容" name="content" id="" cols="42" rows="10"></textarea>
-		</div>
-		<div class="submit">发表</div>
-	</form>
+	<form method="post">
+  <div class="form-group">
+    <label for="title">标题：</label>
+    <input type="text" class="form-control" name="title" placeholder="请输入标题">
+  </div>
+  <div class="form-group">
+    <label for="content">内容：</label>
+		<textarea class="form-control"  placeholder="请输入内容" name="content" rows="10"></textarea>
+  </div>
+  <button type="submit" class="btn btn-default submit">Submit</button>
+</form>
 </div>
 <script>
+jQuery.fn.extend({
+            autoHeight: function(){
+                return this.each(function(){
+                    var $this = jQuery(this);
+                    if( !$this.attr('_initAdjustHeight') ){
+                        $this.attr('_initAdjustHeight', $this.outerHeight());
+                    }
+                    _adjustH(this).on('input', function(){
+                        _adjustH(this);
+                    });
+                });
+                /**
+                 * 重置高度
+                 * @param {Object} elem
+                 */
+                function _adjustH(elem){
+                    var $obj = jQuery(elem);
+                    return $obj.css({height: $obj.attr('_initAdjustHeight'), 'overflow-y': 'hidden'})
+                            .height( elem.scrollHeight );
+                }
+            }
+        });
+        // 使用
+        $(function(){
+            $('textarea').autoHeight();
+        });
+
     $('.submit').click(()=>{
         if ($('input[name=title]').val().trim() == '') {
-            fade('请输入标题')
+            alert('请输入标题')
         }else if ($('textarea').val().trim() == '') {
-            fade('请输入内容')
-        }else{          
+            alert('请输入内容')
+        }else{
             $.ajax({
                 url: "/create",
                 data: $('.form').serialize(),
@@ -27,19 +54,19 @@
                 dataType: 'json',
                 success: function (msg) {
                     if (msg) {
-                        fade('发表成功')
+                        alert('发表成功')
                         setTimeout(()=>{
                             window.location.href = "/posts"
                         },1000)
                     }else{
-                        fade('发表失败')
+                        alert('发表失败')
                     }
                 },
                 error: function () {
-                    alert('异常');
+                    ww('异常');
                 }
-            })			
-        }   
+            })
+        }
     })
 </script>
 <% include footer %>

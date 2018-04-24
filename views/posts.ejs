@@ -10,7 +10,13 @@
 				</ul>
 			</nav>
 			<div class="featured">
-				<span></span>
+				<span>
+					<% if(session.user){ %>
+						<a href="/create">发表文章</a> <a href="/signout">登出</a>
+					<% }else{ %>
+						<a href="/signin">登录</a> <a href="/signup">注册</a>
+					<% } %>
+				</span>
 				<h2>KNOW MORE，DO MORE，BE MORE</a></h2>
 			</div>
 		</div>
@@ -23,7 +29,6 @@
 						<div>
 							<span class="post-date"><%= res.moment %></span>
 							<h2><a href="/posts/<%= res.id %>"><%- res.title %></a></h2>
-							<p><%- res.content %></p>
 							<p class="post-footer">
 								<span>评论数：<%= res.comments %></span>
 								<span>浏览量：<%= res.pv %></span>
